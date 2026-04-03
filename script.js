@@ -12,11 +12,19 @@ async function getMap(){
     let hex = data.map;
     console.log(hex)
     for (const item of hex) {
-        if (item.type !== "Impassable"){
-        let image = document.createElement('img');
-        image.src = `https://tinkr.tech/${item.image}`
-        mapContainer.appendChild(image)
-        console.log(item);}
+        if (item.type !== "impassable"){
+        
+            let image = document.createElement('img');
+            image.src = `https://tinkr.tech/${item.image}`
+           
+            mapContainer.appendChild(image)
+
+            image.classList.add('mapHex')
+            image.style.left = item.x+'px';
+            image.style.top = item.y +'px';
+            
+        
+            console.log(item);}
     }
 } 
 
