@@ -1,12 +1,10 @@
 .mapHexContainer {
-position: relative;    
-
-display: flex;
-gap: 20px;
-justify-content: space-between;
+position: relative;  
 }
 
 .mapHex {
-    position: absolute;
     
+    
+    position: absolute;
+
     }

@@ -20,8 +20,10 @@ async function getMap(){
             mapContainer.appendChild(image)
 
             image.classList.add('mapHex')
-            image.style.left = item.x+'px';
+            image.style.left = item.x + 'px';
             image.style.top = item.y +'px';
+            image.style.width = item.width + 'px';
+            image.style.height =item.height + 'px';
             
         
             console.log(item);}
