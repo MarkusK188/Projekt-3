@@ -1,5 +1,5 @@
 const mapContainer = document.querySelector('#mapContainer');
-
+const joinBtn = document.querySelector('#joinBtn');
 
 let maps;
 
@@ -10,7 +10,9 @@ async function getMap(){
     const response = await fetch('https://tinkr.tech/sdb/markus_namespace/antiyoy1');
     const data = await response.json();
     let hex = data.map;
-    console.log(hex)
+
+    mapContainer.innerHTML = "";
+
     for (const item of hex) {
         if (item.type !== "impassable"){
             
@@ -43,7 +45,6 @@ async function getMap(){
         }
 
         
-            console.log(item);
         };
         
         
@@ -60,6 +61,8 @@ function drawOnHex(obj, item){
 }
      
 
-
-getMap();
+setInterval(function() {
+    getMap();
+    console.log('refreshed');
+}, 2000);
 
