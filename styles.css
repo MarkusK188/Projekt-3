@@ -8,3 +8,11 @@ position: relative;
     position: absolute;
 
     }
+
+.building {
+    pointer-events: none;
+}
+
+.unit {
+    pointer-events: none;
+}

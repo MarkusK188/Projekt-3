@@ -7,6 +7,10 @@ let maps;
 
 let playerKey;
 
+let fromCoordinates = null;
+let toCoordinates = null;
+
+
 
 const url = 'https://tinkr.tech/sdb/markus_namespace/antiyoy1';
 
@@ -27,6 +31,19 @@ async function getMap(){
             mapContainer.appendChild(imageContainer);
             imageContainer.appendChild(image);
 
+            
+            image.addEventListener('click',function(){
+                if (fromCoordinates !== null){
+                    hexTo(item);
+                    fromCoordinates = null;
+                    console.log(toCoordinates)
+                } else {hexOnClick(item);
+                    console.log(fromCoordinates)
+                    toCoordinates = null;
+                }
+                
+            })
+
             mapContainer.classList.add('mapHexContainer');
 
             drawOnHex(image, item);
@@ -34,6 +51,7 @@ async function getMap(){
         if (item.building !== null) {
             let buildingImg = document.createElement('img');
             buildingImg.src = `https://tinkr.tech/${item.building_image}`;
+            buildingImg.classList.add('building')
 
             imageContainer.appendChild(buildingImg);
 
@@ -42,6 +60,7 @@ async function getMap(){
         if (item.unit !== null) {
             let unitImg = document.createElement('img');
             unitImg.src = `https://tinkr.tech/${item.unit_image}`
+            unitImg.classList.add('unit')
 
             imageContainer.appendChild(unitImg);
 
@@ -124,3 +143,29 @@ async function startGame(){
     console.log(result);
     
 };
+
+
+function hexOnClick(hex) {
+    console.log('I WORK!');
+    
+       
+        let col = hex.col;
+        let row = hex.row;
+        fromCoordinates = {col, row};
+        console.log("from");
+    
+
+
+};
+
+function hexTo(hexTo){
+        let col = hexTo.col;
+        let row = hexTo.row;
+        toCoordinates = {col, row}
+        console.log("to")
+        fromCoordinates = null;
+        
+    
+}
+
+
