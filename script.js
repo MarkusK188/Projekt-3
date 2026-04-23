@@ -2,6 +2,7 @@ const mapContainer = document.querySelector('#mapContainer');
 const joinBtn = document.querySelector('#joinBtn');
 const userInput = document.querySelector('#userInput');
 const startGameBtn = document.querySelector('#startGameBtn');
+const endTurnBtn = document.querySelector('#endTurnBtn');
 
 let maps;
 
@@ -35,6 +36,7 @@ async function getMap(){
             image.addEventListener('click',function(){
                 if (fromCoordinates !== null){
                     hexTo(item);
+                    sendMove(fromCoordinates, toCoordinates)
                     fromCoordinates = null;
                     console.log(toCoordinates)
                 } else {hexOnClick(item);
@@ -92,6 +94,9 @@ setInterval(function() {
 
 }, 2000);
 
+
+
+
 joinBtn.addEventListener('click', function(){
     if (userInput.value.trim() !== "" ){
         let name = userInput.value.trim();
@@ -104,6 +109,11 @@ joinBtn.addEventListener('click', function(){
 startGameBtn.addEventListener('click', function(){
     startGame();
 });
+
+endTurnBtn.addEventListener('click', function(){
+    endTurn();
+});
+
 
 async function joinGame(playerName) {
         const join = {
@@ -163,9 +173,41 @@ function hexTo(hexTo){
         let row = hexTo.row;
         toCoordinates = {col, row}
         console.log("to")
-        fromCoordinates = null;
+       
         
     
-}
+};
 
 
+async function sendMove(From, To) {
+
+    let move = {
+        action: "move",
+         player_key: localStorage.getItem("player_key"),
+         from: From,
+         to: To};
+    let response = await fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(move)
+    });
+    let result = await response.json()
+    console.log(result)
+};
+
+
+async function endTurn() {
+     const end = {
+             action: "end_turn",
+            player_key: localStorage.getItem("player_key")
+            };
+    const response = await fetch(url, {
+     method: 'POST',
+     headers: {
+    'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(end)
+  });
+};
