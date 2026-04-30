@@ -3,6 +3,9 @@ const joinBtn = document.querySelector('#joinBtn');
 const userInput = document.querySelector('#userInput');
 const startGameBtn = document.querySelector('#startGameBtn');
 const endTurnBtn = document.querySelector('#endTurnBtn');
+const surrenderBtn = document.querySelector('#surrenderBtn');
+const moneyCounter = document.querySelector('.money');
+const storeUnits = document.querySelectorAll('.storeUnit')
 
 let maps;
 
@@ -10,6 +13,9 @@ let playerKey;
 
 let fromCoordinates = null;
 let toCoordinates = null;
+moneyCounter.textContent = "0"
+
+
 
 
 
@@ -19,6 +25,14 @@ async function getMap(){
     const response = await fetch(url);
     const data = await response.json();
     let hex = data.map;
+    let player = data.players;
+    let money = 0    
+
+   if (data.phase !== "lobby"){
+        money = player[0].money;
+        moneyCounter.textContent = player[0].username +"'s"+ " " + "money: " + " " + money
+        joinBtn.remove();
+        startGameBtn.remove()};
 
     mapContainer.innerHTML = "";
 
@@ -91,20 +105,66 @@ setInterval(function() {
     console.log('refreshed');
     let playerKey = localStorage.getItem("player_key");
       console.log(playerKey);
+      
 
-}, 2000);
+}, 1000);
 
 
-
+storeUnits.forEach(unit =>{
+    unit.addEventListener('click', function(){
+        let storeItem = null;
+        if (event.target.id === "1"){
+            let storeItem = "peasant"
+            buyStore(storeItem, fromCoordinates)
+            console.log(storeItem);
+            
+        };
+        if (event.target.id === "2"){
+            let storeItem = "spearman"
+            buyStore(storeItem, fromCoordinates)
+            console.log(storeItem);
+        };
+        if (event.target.id === "3"){
+            let storeItem = "baron"
+            buyStore(storeItem, fromCoordinates)
+            console.log(storeItem)
+        };
+        if (event.target.id === "4"){
+            let storeItem = "knight"
+            buyStore(storeItem, fromCoordinates)
+            console.log(storeItem)
+        };
+        if (event.target.id === "5"){
+            let storeItem = "farm"
+            buyStore(storeItem, fromCoordinates)
+            console.log(storeItem)
+        };
+        if (event.target.id === "6"){
+            let storeItem = "tower"
+            buyStore(storeItem, fromCoordinates)
+            console.log(storeItem)
+        };
+        if (event.target.id === "7"){
+            let storeItem = "fortress"
+            buyStore(storeItem, fromCoordinates)
+            console.log(storeItem)
+        };
+        fromCoordinates = null;
+        
+    });
+});
 
 joinBtn.addEventListener('click', function(){
     if (userInput.value.trim() !== "" ){
         let name = userInput.value.trim();
-        joinGame(name);}
+        joinGame(name);
+        joinBtn.remove();}
     else {
         console.log("You must enter a username to join!")}
         console.log(userInput.value.trim() );
 });
+
+
 
 startGameBtn.addEventListener('click', function(){
     startGame();
@@ -114,6 +174,13 @@ endTurnBtn.addEventListener('click', function(){
     endTurn();
 });
 
+
+surrenderBtn.addEventListener('click',function(){
+    console.log("jouuu")
+    let playerKey = localStorage.getItem("player_key");
+    console.log(playerKey)
+    surrenderThyself(playerKey);
+});
 
 async function joinGame(playerName) {
         const join = {
@@ -154,6 +221,22 @@ async function startGame(){
     
 };
 
+async function surrenderThyself(Key) {
+    
+      const surrender = {
+             action: "surrender",
+             player_key: Key
+            };
+    const response = await fetch(url, {
+     method: 'POST',
+     headers: {
+    'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(surrender)
+  });
+  const result = await response.json()
+  console.log(result)
+};
 
 function hexOnClick(hex) {
     console.log('I WORK!');
@@ -211,3 +294,18 @@ async function endTurn() {
     body: JSON.stringify(end)
   });
 };
+async function buyStore(Unit, To) {
+   let buy = {
+        action: "buy",
+         player_key: localStorage.getItem("player_key"),
+         type: Unit,
+         hex: To};
+    let response = await fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(buy)
+    });
+    let result = await response.json()
+    console.log(result)};
