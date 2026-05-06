@@ -5,17 +5,23 @@ const startGameBtn = document.querySelector('#startGameBtn');
 const endTurnBtn = document.querySelector('#endTurnBtn');
 const surrenderBtn = document.querySelector('#surrenderBtn');
 const moneyCounter = document.querySelector('.money');
-const storeUnits = document.querySelectorAll('.storeUnit')
+const storeUnits = document.querySelectorAll('.storeUnit');
+const turn = document.querySelector('#currentTurn');
 
 let maps;
 
 let playerKey;
-
+let player = null
 let fromCoordinates = null;
 let toCoordinates = null;
+
 moneyCounter.textContent = "0"
+let money = 0;
+let income = 0;
+let upkeep = 0;
 
-
+let userName = null;
+checkName();
 
 
 
@@ -25,14 +31,22 @@ async function getMap(){
     const response = await fetch(url);
     const data = await response.json();
     let hex = data.map;
-    let player = data.players;
-    let money = 0    
+    player = data.players;
+    
 
    if (data.phase !== "lobby"){
-        money = player[0].money;
-        moneyCounter.textContent = player[0].username +"'s"+ " " + "money: " + " " + money
+        getPlayerInfo();
+        moneyCounter.textContent = userName +"'s"+ " " + "money: " + money + " "  + "income: "+income + " "  +"upkeep: " + upkeep 
         joinBtn.remove();
-        startGameBtn.remove()};
+        startGameBtn.remove()
+        userInput.remove()
+         if (data.current_player === userName){
+            turn.textContent = "Your turn!";
+        } else { turn.textContent = "Wait for your turn!"}
+        };
+    if (data.winner !== null) {
+        alert("Victory!")
+    }
 
     mapContainer.innerHTML = "";
 
@@ -102,11 +116,7 @@ function drawOnHex(obj, item){
 
 setInterval(function() {
     getMap();
-    console.log('refreshed');
     let playerKey = localStorage.getItem("player_key");
-      console.log(playerKey);
-      
-
 }, 1000);
 
 
@@ -156,12 +166,13 @@ storeUnits.forEach(unit =>{
 
 joinBtn.addEventListener('click', function(){
     if (userInput.value.trim() !== "" ){
-        let name = userInput.value.trim();
-        joinGame(name);
-        joinBtn.remove();}
+        userName = userInput.value.trim();
+         localStorage.setItem("user_name", userName); 
+        joinGame(userName);
+    }
     else {
-        console.log("You must enter a username to join!")}
-        console.log(userInput.value.trim() );
+        alert("You must enter a username to join!")}
+        
 });
 
 
@@ -194,6 +205,10 @@ async function joinGame(playerName) {
     },
     body: JSON.stringify(join)
   });
+  if (!response.ok){
+        let errorText = await response.text();
+        alert(errorText);
+    }
   
   const result = await response.json();
   let playerKey = result.player_key;
@@ -201,6 +216,7 @@ async function joinGame(playerName) {
    localStorage.setItem("player_key", playerKey);       
   console.log(result);
   console.log(playerKey);
+  joinBtn.remove();
     
 };
 
@@ -263,12 +279,13 @@ function hexTo(hexTo){
 
 
 async function sendMove(From, To) {
-
+    
     let move = {
         action: "move",
          player_key: localStorage.getItem("player_key"),
          from: From,
          to: To};
+
     let response = await fetch(url, {
         method: 'POST',
         headers: {
@@ -276,9 +293,17 @@ async function sendMove(From, To) {
         },
         body: JSON.stringify(move)
     });
+
+    if (!response.ok){
+        let errorText = await response.text();
+        alert(errorText);
+    }
+
     let result = await response.json()
-    console.log(result)
-};
+    console.log(result)}
+    
+  
+
 
 
 async function endTurn() {
@@ -293,6 +318,9 @@ async function endTurn() {
     },
     body: JSON.stringify(end)
   });
+   if (!response.ok){
+        let errorText = await response.text();
+        alert(errorText);};
 };
 async function buyStore(Unit, To) {
    let buy = {
@@ -307,5 +335,31 @@ async function buyStore(Unit, To) {
         },
         body: JSON.stringify(buy)
     });
+     if (!response.ok){
+        let errorText = await response.text();
+        alert(errorText);};
     let result = await response.json()
     console.log(result)};
+
+function getPlayerInfo(){
+    for (const players of player) {
+        if (players.username === userName) {
+            money = players.money;
+            income = players.income;
+            upkeep = players.upkeep;
+            
+        }
+    }
+};
+
+function checkName(){
+    if (localStorage.getItem("user_name")){
+        userName = localStorage.getItem("user_name");
+    }
+};
+
+function drawStore(){
+    let price = document.createElement('p1');
+    
+};
+

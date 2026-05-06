@@ -4,6 +4,7 @@
 	    <link rel="stylesheet" href="styles.css">
     </head>
     <body>
+ 
         <div class="joinContainer">
             <div class="usernamePrompt">
                 <input id="userInput">
@@ -30,18 +31,43 @@
 
         <div class="moneyContainer">
             <p1 class="money">0</p1>
-            
         </div>
+
+        <div class="turnContainer" style="display: flex; position: absolute; left: 25%; top: 10px; border: 2px solid black; background-color: rgb(190, 209, 209);;">
+            <span id="currentTurn">The game has not begun</span>
+        </div>
+
         <div class="storeContainer">
-            <img class="storeUnit" id="1" src="https://tinkr.tech//sdb_apps/antiyoy/images/unit_peasant.svg">
-            <img class="storeUnit" id="2" src="https://tinkr.tech//sdb_apps/antiyoy/images/unit_spearman.svg">
-            <img class="storeUnit" id="3" src="https://tinkr.tech//sdb_apps/antiyoy/images/unit_baron.svg">
-            <img class="storeUnit" id="4" src="https://tinkr.tech//sdb_apps/antiyoy/images/unit_knight.svg">
+            <div class="itemStore">
+                <img class="storeUnit" id="1" src="https://tinkr.tech//sdb_apps/antiyoy/images/unit_peasant.svg">
+                <span class="price">Price:10G</span>
+            </div>
+           <div>
+                <img class="storeUnit" id="2" src="https://tinkr.tech//sdb_apps/antiyoy/images/unit_spearman.svg">
+                 <span class="price">Price:20G</span>
+            </div>
+           <div>
+                <img class="storeUnit" id="3" src="https://tinkr.tech//sdb_apps/antiyoy/images/unit_baron.svg">
+                <span class="price">Price:30G</span>
+            </div>
+           <div>
+                <img class="storeUnit" id="4" src="https://tinkr.tech//sdb_apps/antiyoy/images/unit_knight.svg">
+                 <span class="price">Price:40G</span>
+            </div>
         </div>
         <div class="storeContainer2">
-            <img class="storeUnit" id="5" src="https://tinkr.tech//sdb_apps/antiyoy/images/building_farm.svg">
-            <img class="storeUnit" id="6" src="https://tinkr.tech//sdb_apps/antiyoy/images/building_tower.svg">
-            <img class="storeUnit" id="7" src="https://tinkr.tech//sdb_apps/antiyoy/images/building_fortress.svg">
+            <div>
+                <img class="storeUnit" id="5" src="https://tinkr.tech//sdb_apps/antiyoy/images/building_farm.svg">
+                <span class="price">Price:12G (+2G per each you own)</span>
+            </div>
+             <div>
+                <img class="storeUnit" id="6" src="https://tinkr.tech//sdb_apps/antiyoy/images/building_tower.svg">
+                <span class="price">Price:15G</span>
+             </div>
+            <div>
+                <img class="storeUnit" id="7" src="https://tinkr.tech//sdb_apps/antiyoy/images/building_fortress.svg">
+                <span class="price">Price:35G</span>
+            </div>
         </div>
 
 
